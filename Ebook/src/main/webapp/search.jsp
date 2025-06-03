@@ -1,0 +1,83 @@
+<%@page import="com.entity.User"%>
+<%@page import="java.util.List"%>
+<%@page import="com.entity.BookDetails"%>
+<%@page import="com.DB.DBConnect"%>
+<%@page import="com.DAO.BookDAOImpl"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<style>
+.crd:hover{
+background-color: #a8e6c4;
+}
+.txt{
+color:#009688;
+}
+.nr{
+color:#009688;
+}
+.bt{
+background-color: #009688;
+color: white;
+}
+.bt:hover{
+text-decoration: none;
+font-size: 110%;
+}
+</style>
+<head>
+<meta charset="UTF-8">
+<title>eBooks : Search Books</title>
+
+<%@include file="all_component/allCss.jsp"%>
+</head>
+<body>
+<%@include file="all_component/navbar.jsp" %>
+
+<%User u=(User)session.getAttribute("userobj");%>
+ 
+ <div class="text-center mt-3 txt">
+ <h2>Search Result</h2>
+ </div>
+ 
+<div class="container-fluid mt-2">
+<div class="row">
+<%
+String ch=request.getParameter("ch");
+BookDAOImpl dao2= new BookDAOImpl(DBConnect.getConn());
+List <BookDetails> list2= dao2.getBookBySearch(ch);
+if(ch.isEmpty()){%>
+<div class="ml-5 text-center">
+<h3 class="nr ml-5 mt-5">No Book Match Your Search Results. Please Try Searching For Another Book or Author.</h3>
+<a href="index.jsp" class="bt btn btn-lg text-white mt-5 mb-5 ml-5">Home</a>
+</div>
+<%}else{
+
+for(BookDetails b: list2){%>
+<div class="col-md-3">
+<div class="card crd mt-3">
+<div class="card-body text-center">
+<p><a href="view_books.jsp?bid=<%=b.getBookId()%>"><img alt="1984" src="books/<%=b.getPhotoName() %>" style="width:150px; height: 200px;" class="img-thumblin"></a></p>
+<p><%=b.getBookName() %></p>
+<p><%=b.getAuthor() %></p>
+<p>Category: <%=b.getBookCategory() %></p>
+<div class="btn">
+<a href="view_books.jsp?bid=<%=b.getBookId()%>" class="btn btn-primary btn-sm text-white">View Details</a>
+<a class="btn btn-danger btn-sm ml-1 text-white">₹<%=b.getPrice()%></a>
+<% if(u==null){%>
+	<a href="login.jsp" class="btn btn-success btn-sm ml-2 text-white"><i class="fa-solid fa-cart-plus"></i></a>
+<%}else{%>
+	<a href="cart?bid=<%=b.getBookId()%>&&uid=<%=u.getId()%>" class="btn btn-success btn-sm ml-2 text-white"><i class="fa-solid fa-cart-plus"></i></a>
+<%}%></div>
+</div>
+</div>
+</div>
+<%}}
+%>
+</div>
+</div>
+
+<%@include file="all_component/footer.jsp" %>
+</body>
+</html>
