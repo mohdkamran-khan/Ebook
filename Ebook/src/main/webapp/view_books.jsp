@@ -52,7 +52,7 @@ BookDetails b= dao.getBookById(bid);
 <% if(u==null){%>
 	<a href="login.jsp" class="btn btn-success btn-md ml-2 text-white"><i class="fa-solid fa-cart-plus"></i> Add To Cart</a>
 <%}else{%>
-	<a href="cart?bid=<%=b.getBookId()%>&&uid=<%=u.getId()%>" class="btn btn-success btn-md ml-2 text-white"><i class="fa-solid fa-cart-plus"></i> Add To Cart</a>
+	<a href="cart?bid=<%=b.getBookId()%>&uid=<%=u.getId()%>" class="btn btn-success btn-md ml-2 text-white"><i class="fa-solid fa-cart-plus"></i> Add To Cart</a>
 <%}%>
 </div>
 
